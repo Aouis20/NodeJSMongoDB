@@ -1,5 +1,6 @@
 // Import de Mongoose
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 // Création du schéma pour la collection "users"
 const userSchema = new mongoose.Schema({
@@ -19,6 +20,8 @@ const userSchema = new mongoose.Schema({
     },
     password: { type: String, required: true, minLength: 8 },
 });
+
+userSchema.plugin(uniqueValidator)
 
 // Création du modèle pour la collection "utilisateurs"
 const User = mongoose.model(User, userSchema);
