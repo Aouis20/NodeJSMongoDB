@@ -1,14 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const port = process.env.PORT
 const db = process.env.DATABASE_URL
 // Création de l'application Express
 const app = express();
 
 // Connexion à la base de données MongoDB
 mongoose.connect('mongodb+srv://aouiscbpro:2OivCgrd62RGfd1C@coursmongo.ndzdpa9.mongodb.net/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  ssl: true
 })
   .then(() => {
     console.log('Connexion à MongoDB réussie');
