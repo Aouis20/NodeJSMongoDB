@@ -1,0 +1,11 @@
+# Fichiers de configuration
+config.ini
+.env
+
+# Fichiers de dépendances
+node_modules/
+.venv/
+
+# Fichiers générés
+build/
+dist/
