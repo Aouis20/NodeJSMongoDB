@@ -1,11 +1,7 @@
 require('dotenv').config()
 const app = require("./app.js")
-const port = process.env.PORT
 
-app.get((req, res) => {
-    res.send('Hello World ! (server.js)')
-})
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+// Exemple de route
+app.get('/', (req, res) => {
+  res.send('Bienvenue sur MongoDB !');
+});
