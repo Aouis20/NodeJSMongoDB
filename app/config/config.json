@@ -1,0 +1,6 @@
+{
+  "development": {
+    "mongodb_uri": "mongodb+srv://aouiscbpro:2OivCgrd62RGfd1C@coursmongo.ndzdpa9.mongodb.net/",
+    "database": "bank"
+  }
+}

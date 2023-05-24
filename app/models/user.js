@@ -18,10 +18,8 @@ const userSchema = new mongoose.Schema({
         }
     },
     password: { type: String, required: true, minLength: 8 },
-    gender: { type: String, required: true, enum: { values: ["male", "female"], message: "{VALUE} n'est pas possible"}}
 });
 
 // Création du modèle pour la collection "utilisateurs"
 const User = mongoose.model(User, userSchema);
 module.exports = User
-
