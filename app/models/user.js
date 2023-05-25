@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 var uniqueValidator = require("mongoose-unique-validator");
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -30,6 +31,31 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.plugin(uniqueValidator);
+
+userSchema.pre("save", async function (next) {
+    try {
+        if (!this.isModified("email" || !this.email)) {
+            return next();
+        }
+        this.email = this.email.toLowerCase().trim()
+        this.email = await encrypt(this.email)
+        next()
+    } catch (e) {
+        next(e);
+    }
+})
+
+userSchema.pre("save", async function (next) {
+    try {
+        if (!this.isModified("password" || !this.password)) {
+            return next();
+        }
+        this.password = await bcrypt.hash(this.password, 10)
+        next()
+    } catch (e) {
+        next(e);
+    }
+})
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

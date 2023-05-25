@@ -20,6 +20,19 @@ const accountSchema = new mongoose.Schema({
   },
 });
 
+accountSchema.pre("save", async function (next) {
+    try {
+        this.lastUpdated = Date.now()
+        next()
+    } catch (e) {
+        next(error)
+    }
+})
+
+accountSchema.pre("findOneAndUpdate", function (next) {
+    this.set({lastUpdated: Date.now()});
+})
+
 const Account = mongoose.model("Account", accountSchema);
 
 module.exports = Account;
