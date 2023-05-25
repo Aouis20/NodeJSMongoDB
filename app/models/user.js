@@ -12,16 +12,27 @@ const userSchema = new mongoose.Schema({
         validate: {
             validator: function (value) {
                 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                return emailRegex.test(email);
+                return emailRegex.test(value);
             },
-            message: props => `${props.value} n'est pas une adresse e-mail valide.`
+            message: props => `${props.value} isn't a valid email address`
         }
     },
-    password: { type: String, required: [true, 'The password is missing'], minLength: 8 },
+    password: {
+        type: String,
+        required: [true, 'The password is missing'],
+        minLength: 8,
+        validate: {
+            validator: function (value) {
+                const passwordRegex = /^(?=.*[0-9)(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
+                return passwordRegex.test(value)
+            },
+            message: "The password must contain at least 8 character including 1 special character and 1 number"
+        }
+    },
 });
 
 userSchema.plugin(uniqueValidator)
 
 // Création du modèle pour la collection "users"
-const User = mongoose.model(User, userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User
