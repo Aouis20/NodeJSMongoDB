@@ -4,8 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 // Création du schéma pour la collection "users"
 const userSchema = new mongoose.Schema({
-    lastname: { type: String, required: true },
-    age: {type: Number, min: [18,"L'age minimum est 18 ans, reçu: {VALUE}"], max: [100,"L'age maximum est 100 ans, reçu: {VALUE}"] },
+    name: { type: String, required: true },
     email: {
         type: String,
         required: true,
@@ -18,11 +17,11 @@ const userSchema = new mongoose.Schema({
             message: props => `${props.value} n'est pas une adresse e-mail valide.`
         }
     },
-    password: { type: String, required: true, minLength: 8 },
+    password: { type: String, required: [true, 'The password is missing'], minLength: 8 },
 });
 
 userSchema.plugin(uniqueValidator)
 
-// Création du modèle pour la collection "utilisateurs"
+// Création du modèle pour la collection "users"
 const User = mongoose.model(User, userSchema);
 module.exports = User
