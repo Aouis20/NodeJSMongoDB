@@ -1,38 +1,35 @@
-// Import de Mongoose
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require("mongoose");
+var uniqueValidator = require("mongoose-unique-validator");
 
-// Création du schéma pour la collection "users"
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: {
-        type: String,
-        required: [true, "Email address is missing"],
-        unique: true,
-        validate: {
-            validator: function (value) {
-                const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                return emailRegex.test(value);
-            },
-            message: props => `${props.value} isn't a valid email address`
-        }
+  email: {
+    type: String,
+    required: [true, "The email field is required."],
+    unique: true,
+    validate: {
+      validator: function (email) {
+        const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailRegex.test(email);
+      },
+      message: "Please filled a valid e-mail address",
     },
-    password: {
-        type: String,
-        required: [true, 'The password is missing'],
-        minLength: 8,
-        validate: {
-            validator: function (value) {
-                const passwordRegex = /^(?=.*[0-9)(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
-                return passwordRegex.test(value)
-            },
-            message: "The password must contain at least 8 character including 1 special character and 1 number"
-        }
+  },
+  password: {
+    type: String,
+    required: [true, "The password field is required."],
+    validate: {
+      validator: function (value) {
+        return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/.test(
+          value
+        );
+      },
+      message:
+        "The password must contain at least 8 characters, including at least 1 number and 1 special character.",
     },
+  },
 });
 
-userSchema.plugin(uniqueValidator)
+userSchema.plugin(uniqueValidator);
 
-// Création du modèle pour la collection "users"
 const User = mongoose.model("User", userSchema);
-module.exports = User
+module.exports = User;
