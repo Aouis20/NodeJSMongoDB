@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Operation = require("./operation.js");
 
 const accountSchema = new mongoose.Schema({
   user: {
@@ -21,17 +22,18 @@ const accountSchema = new mongoose.Schema({
 });
 
 accountSchema.pre("save", async function (next) {
-    try {
-        this.lastUpdated = Date.now()
-        next()
-    } catch (e) {
-        next(error)
-    }
-})
+  try {
+    this.lastUpdated = Date.now();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 accountSchema.pre("findOneAndUpdate", function (next) {
-    this.set({lastUpdated: Date.now()});
-})
+  this.set({ lastUpdated: Date.now() });
+  next();
+});
 
 const Account = mongoose.model("Account", accountSchema);
 
