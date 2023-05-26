@@ -1,4 +1,4 @@
-const Account = require("../models/bank-account.js");
+const Account = require("../models/account.js");
 
 exports.create = async (req, res) => {
   try {
