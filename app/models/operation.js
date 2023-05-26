@@ -1,47 +1,59 @@
-// Import de Mongoose
-const mongoose = require('mongoose');
-const Category = require('./category');
-const Account = require('./account');
+const mongoose = require("mongoose");
 
-// Création du schéma pour la collection "accounts"
 const operationSchema = new mongoose.Schema({
-    label: {
-        type: String,
-        required: [true, "Label is missing"],
-        minlength: [2, "Label should have at least 2 characters"],
-        maxlength: [100, "Label should have at most 100 characters"]
+  account: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Account",
+    required: [true, 'The account field is required.'],
+  },
+  label: {
+    type: String,
+    minlength: [2, "The label must be at least 2 characters long."],
+    maxlength: [50, "The label cannot exceed 50 characters."],
+    required: [true, 'The label field is required.'],
+  },
+  action: {
+    type: String,
+    enum: {
+      values: ["credit", "debit"],
+      message: 'Invalid value for action. Must be either "credit" or "debit".',
     },
-    type: {
-        type: String,
-        enum: {
-            values: ["debit", "credit"],
-            message: "Invalid operation type. Must be either 'debit' or 'credit'."
-        },
-        required: [true, "Operation type is missing"]
+    required: [true, 'The action field is required.'],
+  },
+  amount: {
+    type: Number,
+    required: [true, 'The amount field is required.'],
+  },
+  paymentDate: {
+    type: Date,
+    required: [true, 'The paymentDate field is required.'],
+  },
+  paymentMethod: {
+    type: String,
+    enum: {
+      values: [
+        "Cheque",
+        "Withdrawal",
+        "Credit Card",
+        "Debit Card",
+        "Bank Transfer",
+        "Cash",
+      ],
+      message: "Invalid value for payment method.",
     },
-    amount: { type: Number, required: [true, "Amount is missing"], min: 1 },
-    paymentDate: { type: Date, required: [true, "Payment date is missing"]},
-    paymentMethod: {
-        type: String,
-        enum: {
-        values: ["Cash", "Direct Deposit", "Credit Card", "Bank Transfer"],
-        message: "Invalid payment method."
-        },
-        required: [true, "Payment method is missing"]
-    },
-    isCheck: { type: Boolean, required: [true, "Check is missing"] },
-    category: {
-        id: { type: mongoose.Types.ObjectId },
-        ref: "Category",
-        required: [true, "Category is missing"]
-    },
-    accountId: {
-        id: { type: mongoose.Types.ObjectId },
-        ref: "Account",
-        required: [true, "Account is missing"]
-    }
+    required: [true, 'The paymentMethod field is required.'],
+  },
+  isChecked: {
+    type: Boolean,
+    default: false,
+  },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: [true, 'The category field is required.'],
+  },
 });
 
-// Création du modèle pour la collection "accounts"
 const Operation = mongoose.model("Operation", operationSchema);
-module.exports = Operation
+
+module.exports = Operation;
